@@ -32,9 +32,16 @@ class Window(QtGui.QMainWindow):
         value_sub_window.setMinimumSize(1325, 1325)
         value_sub_window.show()
 
+        # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
+        
+        # display main window as maximized
         self.showMaximized()
+        
+        # set window title
         self.setWindowTitle("PE Views")
+        
+        # add icon of window
         self.setWindowIcon(QtGui.QIcon('./icons/search.png'))
 
         # Open file in menu bar
