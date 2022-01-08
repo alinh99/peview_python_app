@@ -9,8 +9,8 @@ class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
 
-        self.setGeometry(50, 50, 500, 300)
-        # QtGui.QApplication.processEvents()
+        self.setGeometry(25, 25, 4000, 4000)
+        self.showMaximized()
         self.setWindowTitle("PE Views")
         self.setWindowIcon(QtGui.QIcon('./icons/search.png'))
 
@@ -27,10 +27,13 @@ class Window(QtGui.QMainWindow):
         exit_app.triggered.connect(self.close_application)
         self.statusBar()
 
+        # Add menuBar
         mainMenu = self.menuBar()
 
+        # Add fileMenu in menuBar
         fileMenu = mainMenu.addMenu('&File')
 
+        # Add action in fileMenu
         fileMenu.addAction(openFile)
         fileMenu.addAction(exit_app)
 
@@ -56,6 +59,8 @@ class Window(QtGui.QMainWindow):
             self, 'Open File', '', 'All Files(*.exe*)')
         pe = pefile.PE(name, fast_load=True)
         pe.full_load()
+        self.editor()
+        self.textEdit.setReadOnly(True)
         self.read_image_dos_header(pe)
         self.read_optional_header(pe)
         self.read_image_section_header(pe)
@@ -67,11 +72,13 @@ class Window(QtGui.QMainWindow):
         """Read Binary File"""
         s = codecs.open(name, 'rb', 'mbcs').read()
         self.editor()
+        self.textEdit.setReadOnly(True)
         self.textEdit.setPlainText(s)
 
     def read_image_dos_header(self, pe):
         """Read Image Dos Header"""
         self.dos_header = QtGui.QTextEdit()
+        self.dos_header.setReadOnly(True)
         for field in pe.DOS_HEADER.dump():
             self.setCentralWidget(self.dos_header)
             self.dos_header.append(field)
@@ -79,6 +86,7 @@ class Window(QtGui.QMainWindow):
     def read_optional_header(self, pe):
         """Read Optional Header"""
         self.optional_header = QtGui.QTextEdit()
+        self.optional_header.setReadOnly(True)
         for data_dir in pe.OPTIONAL_HEADER.dump():
             self.setCentralWidget(self.optional_header)
             self.optional_header.append(data_dir)
@@ -99,6 +107,7 @@ class Window(QtGui.QMainWindow):
     def read_image_file_header(self, pe):
         """Read NT_HEADERS FILE_HEADER"""
         self.file_header = QtGui.QTextEdit()
+        self.file_header.setReadOnly(True)
         for field in pe.FILE_HEADER.dump():
             self.setCentralWidget(self.file_header)
             self.file_header.append(field)
@@ -106,6 +115,7 @@ class Window(QtGui.QMainWindow):
     def read_image_section_header(self, pe):
         """Read Image Section Header"""
         self.section_header = QtGui.QTextEdit()
+        self.section_header.setReadOnly(True)
         self.setCentralWidget(self.section_header)
         self.section_header.setPlainText(
             ' '.join(map(str, pe.sections)))
@@ -113,6 +123,7 @@ class Window(QtGui.QMainWindow):
     def read_sections(self, pe):
         """Read Section Header"""
         self.section = QtGui.QTextEdit()
+        self.section.setReadOnly(True)
         for section in pe.sections:
             self.setCentralWidget(self.section)
             self.section.append(section.Name.decode('utf-8'))
@@ -130,6 +141,7 @@ class Window(QtGui.QMainWindow):
     def editor(self):
         """Edit data"""
         self.textEdit = QtGui.QTextEdit()
+        self.textEdit.setReadOnly(True)
         self.setCentralWidget(self.textEdit)
 
 
