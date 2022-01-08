@@ -34,13 +34,13 @@ class Window(QtGui.QMainWindow):
 
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
-        
+
         # display main window as maximized
         self.showMaximized()
-        
+
         # set window title
         self.setWindowTitle("PE Views")
-        
+
         # add icon of window
         self.setWindowIcon(QtGui.QIcon('./icons/search.png'))
 
@@ -67,9 +67,10 @@ class Window(QtGui.QMainWindow):
         fileMenu.addAction(openFile)
         fileMenu.addAction(exit_app)
 
-        self.home()
+        self.toolbar()
 
-    def home(self):
+    def toolbar(self):
+        """Display toolbar"""
         openFileAction = QtGui.QAction(QtGui.QIcon(
             './icons/exe_file.png'), 'Read Exe File', self)
         openFileAction.triggered.connect(self.file_open)
