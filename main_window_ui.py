@@ -9,6 +9,23 @@ class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
 
+        self.mdi = QtGui.QMdiArea()
+        self.setCentralWidget(self.mdi)
+
+        button_sub_window = QtGui.QMdiSubWindow()
+        button_sub_window.setWidget(QtGui.QTextEdit())
+
+        self.mdi.addSubWindow(button_sub_window)
+        button_sub_window.setMinimumSize(600, 1000)
+        button_sub_window.show()
+
+        value_sub_window = QtGui.QMdiSubWindow()
+        value_sub_window.setWidget(QtGui.QTextEdit())
+
+        self.mdi.addSubWindow(value_sub_window)
+        value_sub_window.setMinimumSize(1325, 1325)
+        value_sub_window.show()
+
         self.setGeometry(25, 25, 4000, 4000)
         self.showMaximized()
         self.setWindowTitle("PE Views")
