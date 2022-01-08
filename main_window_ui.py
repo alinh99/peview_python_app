@@ -13,14 +13,18 @@ class Window(QtGui.QMainWindow):
         self.setCentralWidget(self.mdi)
 
         button_sub_window = QtGui.QMdiSubWindow()
-        button_sub_window.setWidget(QtGui.QTextEdit())
+        self.edit_button = QtGui.QTextEdit()
+        self.edit_button.setReadOnly(True)
+        button_sub_window.setWidget(self.edit_button)
 
         self.mdi.addSubWindow(button_sub_window)
         button_sub_window.setMinimumSize(600, 1000)
         button_sub_window.show()
 
         value_sub_window = QtGui.QMdiSubWindow()
-        value_sub_window.setWidget(QtGui.QTextEdit())
+        self.edit_value = QtGui.QTextEdit()
+        self.edit_value.setReadOnly(True)
+        value_sub_window.setWidget(self.edit_value)
 
         self.mdi.addSubWindow(value_sub_window)
         value_sub_window.setMinimumSize(1325, 1325)
