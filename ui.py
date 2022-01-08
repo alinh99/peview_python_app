@@ -2,7 +2,6 @@
 import sys
 import pefile
 from PyQt4 import QtGui
-import json
 import codecs
 
 
