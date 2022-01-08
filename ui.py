@@ -13,7 +13,7 @@ class Window(QtGui.QMainWindow):
         self.setGeometry(50, 50, 500, 300)
         # QtGui.QApplication.processEvents()
         self.setWindowTitle("PE Views")
-        self.setWindowIcon(QtGui.QIcon('search.png'))
+        self.setWindowIcon(QtGui.QIcon('./icons/search.png'))
 
         # Open file in menu bar
         openFile = QtGui.QAction("&Open File", self)
@@ -39,10 +39,10 @@ class Window(QtGui.QMainWindow):
 
     def home(self):
         openFileAction = QtGui.QAction(QtGui.QIcon(
-            'exe_file.png'), 'Read Exe File', self)
+            './icons/exe_file.png'), 'Read Exe File', self)
         openFileAction.triggered.connect(self.file_open)
         quitAction = QtGui.QAction(
-            QtGui.QIcon('exit_button.png'), 'Quit', self)
+            QtGui.QIcon('./icons/exit_button.png'), 'Quit', self)
         quitAction.triggered.connect(self.close_application)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(openFileAction)
