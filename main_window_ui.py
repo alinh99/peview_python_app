@@ -9,6 +9,7 @@ class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
 
+        # Add button_sub_window
         self.mdi = QtGui.QMdiArea()
         self.setCentralWidget(self.mdi)
 
@@ -21,6 +22,7 @@ class Window(QtGui.QMainWindow):
         button_sub_window.setMinimumSize(600, 1000)
         button_sub_window.show()
 
+        # Add value_sub_window
         value_sub_window = QtGui.QMdiSubWindow()
         self.edit_value = QtGui.QTextEdit()
         self.edit_value.setReadOnly(True)
