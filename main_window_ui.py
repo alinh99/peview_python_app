@@ -9,6 +9,8 @@ import os
 class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
+        self.textEdit = QtGui.QTextEdit()
+        self.toolBar = self.addToolBar("Extraction")
         self.section = QtGui.QTextEdit()
         self.section_header = QtGui.QTextEdit()
         self.file_header = QtGui.QTextEdit()
@@ -70,10 +72,39 @@ class Window(QtGui.QMainWindow):
 
     def create_list_button(self):
         program = QtGui.QPushButton("Program", self)
-
+        image_dos_header = QtGui.QPushButton("IMAGE_DOS_HEADER", self)
+        optional_header = QtGui.QPushButton("OPTIONAL_HEADER", self)
+        signature = QtGui.QPushButton("SIGNATURE", self)
+        image_file_header = QtGui.QPushButton("IMAGE_FILE_HEADER", self)
+        image_section_header = QtGui.QPushButton("IMAGE_SECTION_HEADER",self)
+        section = QtGui.QPushButton("SECTION", self)
         program.resize(program.minimumSizeHint())
-        program.move(6, 102)
+        program.move(20, 102)
         program.show()
+
+        image_dos_header.resize(image_dos_header.minimumSizeHint())
+        image_dos_header.move(20, 130)
+        image_dos_header.show()
+
+        optional_header.resize(optional_header.minimumSizeHint())
+        optional_header.move(20, 158)
+        optional_header.show()
+
+        signature.resize(signature.minimumSizeHint())
+        signature.move(20, 186)
+        signature.show()
+
+        image_file_header.resize(image_file_header.minimumSizeHint())
+        image_file_header.move(20, 214)
+        image_file_header.show()
+
+        image_section_header.resize(image_section_header.minimumSizeHint())
+        image_section_header.move(20, 242)
+        image_section_header.show()
+
+        section.resize(section.minimumSizeHint())
+        section.move(20, 270)
+        section.show()
 
     def toolbar(self):
         """Display toolbar"""
@@ -83,7 +114,6 @@ class Window(QtGui.QMainWindow):
         quitAction = QtGui.QAction(
             QtGui.QIcon('./icons/exit_button.png'), 'Quit', self)
         quitAction.triggered.connect(self.close_application)
-        self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(openFileAction)
         self.toolBar.addAction(quitAction)
 
@@ -173,7 +203,6 @@ class Window(QtGui.QMainWindow):
 
     def editor(self):
         """Edit data"""
-        self.textEdit = QtGui.QTextEdit()
         self.textEdit.setReadOnly(True)
         self.setCentralWidget(self.textEdit)
 
