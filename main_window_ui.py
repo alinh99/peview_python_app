@@ -47,8 +47,7 @@ class Window(QtGui.QMainWindow):
         fileMenu.addAction(exit_app)
 
         self.toolbar()
-        self.create_sub_window(600, 1000)
-        self.create_sub_window(1325, 1325)
+        self.create_sub_window(1925, 2325)
 
     def create_sub_window(self, width, height):
         """Display SubWindow"""
