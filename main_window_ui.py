@@ -9,7 +9,9 @@ import sub_window_ui
 class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
-
+        # self.mdi = QtGui.QMdiArea()
+        # self.setCentralWidget(self.mdi)
+        # print("abcd")
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
@@ -46,6 +48,18 @@ class Window(QtGui.QMainWindow):
         fileMenu.addAction(exit_app)
 
         self.toolbar()
+        self.create_sub_window(600, 1000)
+        self.create_sub_window(1325, 1325)
+
+    def create_sub_window(self, width, height):
+        """Display SubWindow"""
+        sub_window = QtGui.QMdiSubWindow()
+        self.edit = QtGui.QTextEdit()
+        self.edit.setReadOnly(True)
+        sub_window.setWidget(self.edit)
+        self.mdi.addSubWindow(sub_window)
+        sub_window.setMinimumSize(width, height)
+        sub_window.show()
 
     def toolbar(self):
         """Display toolbar"""
@@ -157,9 +171,6 @@ class Window(QtGui.QMainWindow):
 def run():
     app = QtGui.QApplication(sys.argv)
     GUI = Window()
-    sub_window = sub_window_ui.SubWindow()
-    sub_window.create_sub_window(600, 1000)
-    sub_window.create_sub_window(1325, 1325)
     sys.exit(app.exec_())
 
 
