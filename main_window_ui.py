@@ -3,14 +3,13 @@ import sys
 import pefile
 from PyQt4 import QtGui
 import codecs
-import sub_window_ui
 
 
 class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
-        # self.mdi = QtGui.QMdiArea()
-        # self.setCentralWidget(self.mdi)
+        self.mdi = QtGui.QMdiArea()
+        self.setCentralWidget(self.mdi)
         # print("abcd")
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
