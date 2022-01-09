@@ -3,34 +3,12 @@ import sys
 import pefile
 from PyQt4 import QtGui
 import codecs
+import sub_window_ui
 
 
 class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
-
-        # Add button_sub_window
-        self.mdi = QtGui.QMdiArea()
-        self.setCentralWidget(self.mdi)
-
-        button_sub_window = QtGui.QMdiSubWindow()
-        self.edit_button = QtGui.QTextEdit()
-        self.edit_button.setReadOnly(True)
-        button_sub_window.setWidget(self.edit_button)
-
-        self.mdi.addSubWindow(button_sub_window)
-        button_sub_window.setMinimumSize(600, 1000)
-        button_sub_window.show()
-
-        # Add value_sub_window
-        value_sub_window = QtGui.QMdiSubWindow()
-        self.edit_value = QtGui.QTextEdit()
-        self.edit_value.setReadOnly(True)
-        value_sub_window.setWidget(self.edit_value)
-
-        self.mdi.addSubWindow(value_sub_window)
-        value_sub_window.setMinimumSize(1325, 1325)
-        value_sub_window.show()
 
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
@@ -179,6 +157,9 @@ class Window(QtGui.QMainWindow):
 def run():
     app = QtGui.QApplication(sys.argv)
     GUI = Window()
+    sub_window = sub_window_ui.SubWindow()
+    sub_window.create_sub_window(600, 1000)
+    sub_window.create_sub_window(1325, 1325)
     sys.exit(app.exec_())
 
 
