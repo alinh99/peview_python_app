@@ -3,7 +3,6 @@ import sys
 import pefile
 from PyQt4 import QtGui, QtCore
 import codecs
-import os
 
 
 class Window(QtGui.QMainWindow):
@@ -18,9 +17,7 @@ class Window(QtGui.QMainWindow):
         self.optional_header = QtGui.QTextEdit()
         self.dos_header = QtGui.QTextEdit()
         self.binary_value = QtGui.QTextEdit()
-        self.mdi = QtGui.QMdiArea()
-        self.setCentralWidget(self.mdi)
-        # print("abcd")
+
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
@@ -57,26 +54,15 @@ class Window(QtGui.QMainWindow):
         fileMenu.addAction(exit_app)
 
         self.toolbar()
-        # self.home()
-
-        # self.show()
-        self.create_sub_window(1925, 2325)
-
-    def create_sub_window(self, width, height):
-        """Display SubWindow"""
-        sub_window = QtGui.QMdiSubWindow()
-        self.mdi.addSubWindow(sub_window)
-        sub_window.setMinimumSize(width, height)
-        sub_window.show()
         self.create_list_button()
 
     def create_list_button(self):
-        program = QtGui.QPushButton("Program", self)
+        program = QtGui.QPushButton("PROGRAM", self)
         image_dos_header = QtGui.QPushButton("IMAGE_DOS_HEADER", self)
         optional_header = QtGui.QPushButton("OPTIONAL_HEADER", self)
         signature = QtGui.QPushButton("SIGNATURE", self)
         image_file_header = QtGui.QPushButton("IMAGE_FILE_HEADER", self)
-        image_section_header = QtGui.QPushButton("IMAGE_SECTION_HEADER",self)
+        image_section_header = QtGui.QPushButton("IMAGE_SECTION_HEADER", self)
         section = QtGui.QPushButton("SECTION", self)
         program.resize(program.minimumSizeHint())
         program.move(20, 102)
