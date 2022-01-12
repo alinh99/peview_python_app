@@ -59,10 +59,13 @@ class Window(QtGui.QMainWindow):
     def create_list_button(self):
         program = QtGui.QPushButton("PROGRAM", self)
         program.setStyleSheet("font-size: 25px;")
+
         image_dos_header = QtGui.QPushButton("IMAGE_DOS_HEADER", self)
         image_dos_header.setStyleSheet("font-size: 25px;")
+
         optional_header = QtGui.QPushButton("OPTIONAL_HEADER", self)
         optional_header.setStyleSheet("font-size: 25px")
+
         signature = QtGui.QPushButton("SIGNATURE", self)
         signature.setStyleSheet("font-size: 25px")
 
