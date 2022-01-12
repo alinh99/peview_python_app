@@ -58,38 +58,49 @@ class Window(QtGui.QMainWindow):
 
     def create_list_button(self):
         program = QtGui.QPushButton("PROGRAM", self)
+        program.setStyleSheet("font-size: 25px;")
         image_dos_header = QtGui.QPushButton("IMAGE_DOS_HEADER", self)
+        image_dos_header.setStyleSheet("font-size: 25px;")
         optional_header = QtGui.QPushButton("OPTIONAL_HEADER", self)
+        optional_header.setStyleSheet("font-size: 25px")
         signature = QtGui.QPushButton("SIGNATURE", self)
+        signature.setStyleSheet("font-size: 25px")
+
         image_file_header = QtGui.QPushButton("IMAGE_FILE_HEADER", self)
+        image_file_header.setStyleSheet("font-size: 25px")
+
         image_section_header = QtGui.QPushButton("IMAGE_SECTION_HEADER", self)
+        image_section_header.setStyleSheet("font-size: 25px")
+
         section = QtGui.QPushButton("SECTION", self)
-        program.resize(program.minimumSizeHint())
-        program.move(20, 102)
+        section.setStyleSheet("font-size: 25px")
+
+        program.resize(350, 30)
+        program.move(782, 150)
         program.show()
 
-        image_dos_header.resize(image_dos_header.minimumSizeHint())
-        image_dos_header.move(20, 130)
+        image_dos_header.resize(350, 30)
+        image_dos_header.move(782, 200)
         image_dos_header.show()
 
-        optional_header.resize(optional_header.minimumSizeHint())
-        optional_header.move(20, 158)
+        optional_header.resize(350, 30)
+        optional_header.move(782, 250)
         optional_header.show()
 
-        signature.resize(signature.minimumSizeHint())
-        signature.move(20, 186)
+        signature.resize(350, 30)
+        signature.move(782, 300)
         signature.show()
 
-        image_file_header.resize(image_file_header.minimumSizeHint())
-        image_file_header.move(20, 214)
+        image_file_header.resize(350, 30)
+        image_file_header.move(782, 350)
         image_file_header.show()
 
-        image_section_header.resize(image_section_header.minimumSizeHint())
-        image_section_header.move(20, 242)
+        image_section_header.resize(350, 30)
+        image_section_header.move(782, 400)
         image_section_header.show()
 
-        section.resize(section.minimumSizeHint())
-        section.move(20, 270)
+        section.resize(350, 30)
+        section.move(782, 450)
         section.show()
 
     def toolbar(self):

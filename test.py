@@ -1,48 +1,30 @@
-import sys
-from PyQt4 import QtCore
 from PyQt4 import QtGui
+import os
 
 
-class MainWindow(QtGui.QMainWindow):
-    count = 0
-
+class createedditConvertorpage(QtGui.QMainWindow):
     def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent)
-        self.mdi = QtGui.QMdiArea()
-        self.setCentralWidget(self.mdi)
-        bar = self.menuBar()
-
-        file = bar.addMenu("File")
-        file.addAction("New")
-        file.addAction("cascade")
-        file.addAction("Tiled")
-        file.triggered[QtGui.QAction].connect(self.windowaction)
-        self.setWindowTitle("MDI demo")
-
-    def windowaction(self, q):
-        print("triggered")
-
-        if q.text() == "New":
-            MainWindow.count = MainWindow.count+1
-            sub = QtGui.QMdiSubWindow()
-            sub.setWidget(QtGui.QTextEdit())
-            sub.setWindowTitle("subwindow"+str(MainWindow.count))
-            self.mdi.addSubWindow(sub)
-            sub.show()
-
-        if q.text() == "cascade":
-            self.mdi.cascadeSubWindows()
-
-        if q.text() == "Tiled":
-            self.mdi.tileSubWindows()
+        QtGui.QWidget.__init__(self, parent)
 
 
-def main():
-    app = QtGui.QApplication(sys.argv)
-    GUI = MainWindow()
-    GUI.show()
-    sys.exit(app.exec_())
+def selectFilecsvtoxml(self):
+    directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
+    print directory
+    self.listDirPath.setText(directory)
+
+    for file_name in os.listdir(directory):
+        if not file_name.startswith("."):
+            print (file_name) + "   this is selectFilcestoxml"
+    self.directory = directory
+    return directory
 
 
-if __name__ == '__main__':
-    main()
+class readoutWindow(QtGui.QDialog):
+    def openTxt(self):
+        directoryFile = createedditConvertorpage()
+        dir1 = directoryFile.selectFilecsvtoxml()
+        print "this s open text"
+        print str(dir1)
+        for file_name in dir1:
+            if file_name.endswith(".txt"):
+                print (file_name) + "   this is txt file"
