@@ -1,17 +1,18 @@
 # coding=utf-8
 import sys
 import pefile
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui, QtCore, Qt
 from table import TableView
 
 
 class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
-
         self.name = QtGui.QFileDialog.getOpenFileName(
 
             self, 'Open File', '', 'All Files(*.exe*)')
+        self.s = open(self.name, "r")
+
         self.pe = pefile.PE(self.name, fast_load=True)
         self.textEdit = QtGui.QTextEdit()
         self.toolBar = self.addToolBar("Extraction")
@@ -23,6 +24,7 @@ class Window(QtGui.QMainWindow):
         self.dos_header = QtGui.QTextEdit()
         self.binary_value = QtGui.QTextEdit()
 
+        self.program_value = {'Value': [str(lambda: self.read_program_value(self.s))]}
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
@@ -63,8 +65,8 @@ class Window(QtGui.QMainWindow):
         self.create_list_button()
 
     def create_list_button(self):
-        program_data = {'Value': str(lambda: self.read_image_dos_header(self.pe))}
-        print (program_data)
+        # program_data = {'Value': str(lambda: self.read_program_value(self.name))}
+        # print (program_data)
         program = QtGui.QPushButton("PROGRAM", self)
         program.setStyleSheet("font-size: 25px;")
 
@@ -114,6 +116,9 @@ class Window(QtGui.QMainWindow):
         section.move(782, 450)
         section.show()
 
+        # handle button
+        program.clicked.connect(self.display_table)
+
     def toolbar(self):
         """Display toolbar"""
         openFileAction = QtGui.QAction(QtGui.QIcon(
@@ -126,6 +131,13 @@ class Window(QtGui.QMainWindow):
         self.toolBar.addAction(quitAction)
 
         self.show()
+
+    def display_table(self):
+        table = TableView(self.program_value, 3, 1)
+        # table.setWindowFlags(table.windowFlags() | Qt.Window)
+        table.show()
+        self.table = table
+        # self.read_program_value(self.name)
 
     def file_open(self):
         """Open Exe File"""
@@ -143,10 +155,9 @@ class Window(QtGui.QMainWindow):
 
     def read_program_value(self, name):
         """Read Binary File"""
-        s = open(name, "r")
         self.binary_value.setReadOnly(True)
         self.setCentralWidget(self.binary_value)
-        self.binary_value.setPlainText(s.read())
+        # self.binary_value.setPlainText(s.read())
 
     def read_image_dos_header(self, pe):
         """Read Image Dos Header"""
