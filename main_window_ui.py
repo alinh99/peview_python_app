@@ -2,12 +2,17 @@
 import sys
 import pefile
 from PyQt4 import QtGui, QtCore
-import codecs
+from table import TableView
 
 
 class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
+
+        self.name = QtGui.QFileDialog.getOpenFileName(
+
+            self, 'Open File', '', 'All Files(*.exe*)')
+        self.pe = pefile.PE(self.name, fast_load=True)
         self.textEdit = QtGui.QTextEdit()
         self.toolBar = self.addToolBar("Extraction")
         self.section = QtGui.QTextEdit()
@@ -54,9 +59,12 @@ class Window(QtGui.QMainWindow):
         fileMenu.addAction(exit_app)
 
         self.toolbar()
+        self.file_open()
         self.create_list_button()
 
     def create_list_button(self):
+        program_data = {'Value': str(lambda: self.read_image_dos_header(self.pe))}
+        print (program_data)
         program = QtGui.QPushButton("PROGRAM", self)
         program.setStyleSheet("font-size: 25px;")
 
@@ -121,28 +129,24 @@ class Window(QtGui.QMainWindow):
 
     def file_open(self):
         """Open Exe File"""
-        name = QtGui.QFileDialog.getOpenFileName(
+        self.pe.full_load()
 
-            self, 'Open File', '', 'All Files(*.exe*)')
-        pe = pefile.PE(name, fast_load=True)
-        pe.full_load()
-        # self.read_binary(name)
-        # self.editor()
-        # self.textEdit.setReadOnly(True)
-        # self.read_image_dos_header(pe)
+        # program_table = TableView(program_data, 1, 1)p
+        # program_table.show()
+        # self.read_image_dos_header(self.pe)
+        # self.read_program_value(self.name)
         # self.read_optional_header(pe)
         # self.read_image_section_header(pe)
         # self.read_sections(pe)
         # self.read_signature(pe)
         # self.read_image_file_header(pe)
 
-    def read_binary(self, name):
+    def read_program_value(self, name):
         """Read Binary File"""
-        s = codecs.open(name, 'rb', 'mbcs').read()
+        s = open(name, "r")
         self.binary_value.setReadOnly(True)
-        # self.editor()
-        # self.textEdit.setReadOnly(True)
-        self.binary_value.setPlainText(s)
+        self.setCentralWidget(self.binary_value)
+        self.binary_value.setPlainText(s.read())
 
     def read_image_dos_header(self, pe):
         """Read Image Dos Header"""
@@ -200,11 +204,6 @@ class Window(QtGui.QMainWindow):
     def close_application(self):
         """Close Application"""
         sys.exit()
-
-    def editor(self):
-        """Edit data"""
-        self.textEdit.setReadOnly(True)
-        self.setCentralWidget(self.textEdit)
 
 
 def run():
