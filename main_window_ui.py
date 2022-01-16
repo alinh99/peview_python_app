@@ -1,4 +1,6 @@
 # coding=utf-8
+# -*- coding: utf-8 -*-
+# (or w/ever other coding you use for unicode literals;-)
 import sys
 import pefile
 from PyQt4 import QtGui, QtCore, Qt
@@ -11,7 +13,6 @@ class Window(QtGui.QMainWindow):
         self.name = QtGui.QFileDialog.getOpenFileName(
 
             self, 'Open File', '', 'All Files(*.exe*)')
-        self.s = open(self.name, "r")
 
         self.pe = pefile.PE(self.name, fast_load=True)
         self.textEdit = QtGui.QTextEdit()
@@ -24,7 +25,10 @@ class Window(QtGui.QMainWindow):
         self.dos_header = QtGui.QTextEdit()
         self.binary_value = QtGui.QTextEdit()
 
-        self.program_value = {'Value': [str(lambda: self.read_program_value(self.s))]}
+        program = self.read_program_value()
+        self.program_value = {'Value': [str(program)]}
+        image_dos_header = self.read_image_dos_header(self.pe)
+        # self.image_dos_header_value = {'Value': [str(program)]}
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
@@ -117,7 +121,8 @@ class Window(QtGui.QMainWindow):
         section.show()
 
         # handle button
-        program.clicked.connect(self.display_table)
+        program.clicked.connect(self.display_table_program)
+        # image_dos_header.clicked.connect(self.display_table)
 
     def toolbar(self):
         """Display toolbar"""
@@ -132,20 +137,20 @@ class Window(QtGui.QMainWindow):
 
         self.show()
 
-    def display_table(self):
-        table = TableView(self.program_value, 3, 1)
+    def display_table_program(self):
+        table_program = TableView(self.program_value, 3, 1)
         # table.setWindowFlags(table.windowFlags() | Qt.Window)
-        table.show()
-        self.table = table
+        table_program.show()
+        self.table = table_program
         # self.read_program_value(self.name)
 
     def file_open(self):
         """Open Exe File"""
         self.pe.full_load()
 
-        # program_table = TableView(program_data, 1, 1)p
+        # program_table = TableView(program_data, 1, 1)
         # program_table.show()
-        # self.read_image_dos_header(self.pe)
+        self.read_image_dos_header(self.pe)
         # self.read_program_value(self.name)
         # self.read_optional_header(pe)
         # self.read_image_section_header(pe)
@@ -153,18 +158,19 @@ class Window(QtGui.QMainWindow):
         # self.read_signature(pe)
         # self.read_image_file_header(pe)
 
-    def read_program_value(self, name):
+    def read_program_value(self):
         """Read Binary File"""
-        self.binary_value.setReadOnly(True)
-        self.setCentralWidget(self.binary_value)
-        # self.binary_value.setPlainText(s.read())
+        return self.pe.header
 
     def read_image_dos_header(self, pe):
         """Read Image Dos Header"""
         self.dos_header.setReadOnly(True)
-        for field in pe.DOS_HEADER.dump():
-            self.setCentralWidget(self.dos_header)
-            self.dos_header.append(field)
+
+        # for field in pe.DOS_HEADER.dump():
+        #     self.setCentralWidget(self.dos_header)
+        #     self.dos_header.append(field)
+        # print(self.dos_header)
+        # return self.dos_header
 
     def read_optional_header(self, pe):
         """Read Optional Header"""
