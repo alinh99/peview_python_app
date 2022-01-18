@@ -19,12 +19,6 @@ class Window(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.section = QtGui.QTextEdit()
         self.section_header = QtGui.QTextEdit()
-        self.file_header = QtGui.QTextEdit()
-        self.signature = QtGui.QTextEdit()
-        self.optional_header = QtGui.QTextEdit()
-        self.dos_header = QtGui.QTextEdit()
-        self.binary_value = QtGui.QTextEdit()
-
         self.program_value = {'Value': [str(self.read_program_value())]}
         self.image_dos_header = {'Data': [hex(self.pe.DOS_HEADER.dump_dict()['e_magic']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_cblp']['Value']),
@@ -72,7 +66,31 @@ class Window(QtGui.QMainWindow):
                                                  , 'Reserved', 'OEM Identifier', 'OEM Information', 'Reserved',
                                                  'Offset to New EXE Header'],
                                  'Value': ['IMAGE_DOS_SIGNATURE MZ']}
-        # self.image_dos_header_value = {'Value': [str(program)]}
+
+        self.signature = {'Data': [hex(self.pe.NT_HEADERS.dump_dict()['Signature']['Value'])],
+                          'pFile': [hex(self.pe.NT_HEADERS.dump_dict()['Signature']['FileOffset'])],
+                          'Description': ['Signature'],
+                          'Value': ['IMAGE_NT_SIGNATURE PE']}
+
+        self.file_header = {'Data': [hex(self.pe.FILE_HEADER.dump_dict()['Machine']['Value']),
+                                     hex(self.pe.FILE_HEADER.dump_dict()['NumberOfSections']['Value']),
+                                     self.pe.FILE_HEADER.dump_dict()['TimeDateStamp']['Value'].split('[')[0][:-1],
+                                     hex(self.pe.FILE_HEADER.dump_dict()['PointerToSymbolTable']['Value']),
+                                     hex(self.pe.FILE_HEADER.dump_dict()['NumberOfSymbols']['Value']),
+                                     hex(self.pe.FILE_HEADER.dump_dict()['SizeOfOptionalHeader']['Value']),
+                                     hex(self.pe.FILE_HEADER.dump_dict()['Characteristics']['Value'])],
+                            'pFile': [hex(self.pe.FILE_HEADER.dump_dict()['Machine']['FileOffset']),
+                                      hex(self.pe.FILE_HEADER.dump_dict()['NumberOfSections']['FileOffset']),
+                                      hex(self.pe.FILE_HEADER.dump_dict()['TimeDateStamp']['FileOffset']),
+                                      hex(self.pe.FILE_HEADER.dump_dict()['PointerToSymbolTable']['FileOffset']),
+                                      hex(self.pe.FILE_HEADER.dump_dict()['NumberOfSymbols']['FileOffset']),
+                                      hex(self.pe.FILE_HEADER.dump_dict()['SizeOfOptionalHeader']['FileOffset']),
+                                      hex(self.pe.FILE_HEADER.dump_dict()['Characteristics']['FileOffset'])],
+                            'Description': ['Machine', 'Number of Sections', 'Time Date Stamp',
+                                            'Pointer to Symbol Table', 'Number of Symbols', 'Size of Optional Header',
+                                            'Characteristics'],
+                            'Value': ['IMAGE_FILE_MACHINE_I386', '',
+                                      self.pe.FILE_HEADER.dump_dict()['TimeDateStamp']['Value'].split('[')[1][:-1]]}
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
@@ -167,6 +185,8 @@ class Window(QtGui.QMainWindow):
         # handle button
         program.clicked.connect(self.display_table_program)
         image_dos_header.clicked.connect(self.display_table_image_dos_header)
+        signature.clicked.connect(self.display_table_signature)
+        image_file_header.clicked.connect(self.display_table_file_header)
 
     def toolbar(self):
         """Display toolbar"""
@@ -193,19 +213,19 @@ class Window(QtGui.QMainWindow):
         table_image_dos_header.show()
         self.table = table_image_dos_header
 
+    def display_table_signature(self):
+        table_signature = TableView(self.signature, 1, 4)
+        table_signature.show()
+        self.table = table_signature
+
+    def display_table_file_header(self):
+        table_file_header = TableView(self.file_header, 7, 4)
+        table_file_header.show()
+        self.table = table_file_header
+
     def file_open(self):
         """Open Exe File"""
         self.pe.full_load()
-
-        # program_table = TableView(program_data, 1, 1)
-        # program_table.show()
-        # self.read_image_dos_header(self.pe)
-        # self.read_program_value(self.name)
-        # self.read_optional_header(pe)
-        # self.read_image_section_header(pe)
-        # self.read_sections(pe)
-        # self.read_signature(pe)
-        # self.read_image_file_header(pe)
 
     def read_program_value(self):
         """Read Binary File"""
