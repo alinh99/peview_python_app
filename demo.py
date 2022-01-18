@@ -21,12 +21,13 @@ print "Image Base: " + hex(pe.OPTIONAL_HEADER.ImageBase)
 print "Address of EntryPoint: " + hex(pe.OPTIONAL_HEADER.AddressOfEntryPoint)
 print "RVA Number and Size: " + hex(pe.OPTIONAL_HEADER.NumberOfRvaAndSizes)
 print "Number of Sections within PE: " + hex(pe.FILE_HEADER.NumberOfSections)
-print pe.DOS_HEADER.dump_dict()
+print pe.DOS_HEADER
+print hex(pe.DOS_HEADER.dump_dict()['e_magic']['Offset'])
 # print hex(pe.DOS_HEADER.dump_dict()['CheckSum']['FileOffset'])
-
+# print(hex(pe.DOS_HEADER.dump_dict()['e_res']['Value']))
 # for entry in pe.OPTIONAL_HEADER.DATA_DIRECTORY:
 #     print entry.name + "\n|\n|---- Size : " + str(entry.Size) + "\n|\n|---- VirutalAddress : " + hex(entry.VirtualAddress) + '\n'
-lst = []
-for section in pe.sections:
-    lst.append(section)
-print(lst[0])
+# lst = []
+# for section in pe.sections:
+#     lst.append(section)
+# print(lst[0])
