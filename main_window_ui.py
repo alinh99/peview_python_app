@@ -19,7 +19,7 @@ class Window(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.section = QtGui.QTextEdit()
         self.section_header = QtGui.QTextEdit()
-        self.program_value = {'Value': [str(self.read_program_value(self.name))]}
+        self.program_value = {'Value': [str(self.read_program_value())]}
 
         self.image_dos_header = {'Data': [hex(self.pe.DOS_HEADER.dump_dict()['e_magic']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_cblp']['Value']),
@@ -324,11 +324,9 @@ class Window(QtGui.QMainWindow):
         self.pe = pefile.PE(self.name, fast_load=True)
         self.pe.full_load()
 
-    def read_program_value(self, path):
+    def read_program_value(self):
         """Read Binary File"""
-        with open(path, 'rb') as f:
-            contents = f.read()
-        return contents
+        return self.pe.header
 
     def read_optional_header(self, pe):
         """Read Optional Header"""
