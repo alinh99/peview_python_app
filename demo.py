@@ -13,4 +13,4 @@ pe = pefile.PE(data=pe_data)
 lst_dos_header = []
 for val_dos_header in pe.DOS_HEADER.dump():
     lst_dos_header.append(val_dos_header)
-print(pe.DOS_HEADER.dump())
+print(pe.DOS_HEADER.__keys__)

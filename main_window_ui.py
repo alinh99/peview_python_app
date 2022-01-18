@@ -25,9 +25,28 @@ class Window(QtGui.QMainWindow):
         self.dos_header = QtGui.QTextEdit()
         self.binary_value = QtGui.QTextEdit()
 
-        program = self.read_program_value()
-        self.program_value = {'Value': [str(program)]}
-        image_dos_header = self.read_image_dos_header(self.pe)
+        self.program_value = {'Value': [str(self.read_program_value())]}
+        self.image_dos_header = {'Data': [hex(self.pe.DOS_HEADER.e_magic), hex(self.pe.DOS_HEADER.e_cblp),
+                                          hex(self.pe.DOS_HEADER.e_cp), hex(self.pe.DOS_HEADER.e_crlc),
+                                          hex(self.pe.DOS_HEADER.e_cparhdr), hex(self.pe.DOS_HEADER.e_minalloc),
+                                          hex(self.pe.DOS_HEADER.e_maxalloc), hex(self.pe.DOS_HEADER.e_ss),
+                                          hex(self.pe.DOS_HEADER.e_sp), hex(self.pe.DOS_HEADER.e_csum),
+                                          hex(self.pe.DOS_HEADER.e_ip), hex(self.pe.DOS_HEADER.e_cs),
+                                          hex(self.pe.DOS_HEADER.e_lfarlc), hex(self.pe.DOS_HEADER.e_ovno),
+                                          self.pe.DOS_HEADER.e_res, hex(self.pe.DOS_HEADER.e_oemid),
+                                          hex(self.pe.DOS_HEADER.e_oeminfo), self.pe.DOS_HEADER.e_res2,
+                                          hex(self.pe.DOS_HEADER.e_lfanew)],
+                                 'pFile': ['0x0', '0x2', '0x4', '0x6', '0x8', '0xA', '0xC', '0xE', '0x10', '0x12',
+                                           '0x14', '0x16', '0x18', '0x1A', '0x1C', '0x24', '0x26', '0x28', '0x3C'],
+
+                                 'Description': ['Signature', 'Bytes on Last Page of File', 'Pages in File',
+                                                 'Relocations', 'Size of Header in Paragraphs',
+                                                 'Minimum Extra Paragraphs', 'Maximum Extra Paragraphs',
+                                                 'Initial (relative) SS', 'Initial SP', 'Checksum', 'Initial IP',
+                                                 'Initial (relative) CS', 'Offset to Relocation Table', 'Overlay Number'
+                                                 , 'Reserved', 'OEM Identifier', 'OEM Information', 'Reserved',
+                                                 'Offset to New EXE Header'],
+                                 'Value': ['IMAGE_DOS_SIGNATURE MZ']}
         # self.image_dos_header_value = {'Value': [str(program)]}
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
@@ -122,7 +141,7 @@ class Window(QtGui.QMainWindow):
 
         # handle button
         program.clicked.connect(self.display_table_program)
-        # image_dos_header.clicked.connect(self.display_table)
+        image_dos_header.clicked.connect(self.display_table_image_dos_header)
 
     def toolbar(self):
         """Display toolbar"""
@@ -144,13 +163,18 @@ class Window(QtGui.QMainWindow):
         self.table = table_program
         # self.read_program_value(self.name)
 
+    def display_table_image_dos_header(self):
+        table_image_dos_header = TableView(self.image_dos_header, 19, 4)
+        table_image_dos_header.show()
+        self.table = table_image_dos_header
+
     def file_open(self):
         """Open Exe File"""
         self.pe.full_load()
 
         # program_table = TableView(program_data, 1, 1)
         # program_table.show()
-        self.read_image_dos_header(self.pe)
+        # self.read_image_dos_header(self.pe)
         # self.read_program_value(self.name)
         # self.read_optional_header(pe)
         # self.read_image_section_header(pe)
@@ -161,16 +185,6 @@ class Window(QtGui.QMainWindow):
     def read_program_value(self):
         """Read Binary File"""
         return self.pe.header
-
-    def read_image_dos_header(self, pe):
-        """Read Image Dos Header"""
-        self.dos_header.setReadOnly(True)
-
-        # for field in pe.DOS_HEADER.dump():
-        #     self.setCentralWidget(self.dos_header)
-        #     self.dos_header.append(field)
-        # print(self.dos_header)
-        # return self.dos_header
 
     def read_optional_header(self, pe):
         """Read Optional Header"""
