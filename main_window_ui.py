@@ -19,7 +19,8 @@ class Window(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.section = QtGui.QTextEdit()
         self.section_header = QtGui.QTextEdit()
-        self.program_value = {'Value': [str(self.read_program_value())]}
+        self.program_value = {'Value': [str(self.read_program_value(self.name))]}
+
         self.image_dos_header = {'Data': [hex(self.pe.DOS_HEADER.dump_dict()['e_magic']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_cblp']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_cp']['Value']),
@@ -39,6 +40,7 @@ class Window(QtGui.QMainWindow):
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_oeminfo']['Value']),
                                           (self.pe.DOS_HEADER.dump_dict()['e_res2']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_lfanew']['Value'])],
+
                                  'pFile': [hex(self.pe.DOS_HEADER.dump_dict()['e_magic']['FileOffset']),
                                            hex(self.pe.DOS_HEADER.dump_dict()['e_cblp']['FileOffset']),
                                            hex(self.pe.DOS_HEADER.dump_dict()['e_cp']['FileOffset']),
@@ -58,18 +60,23 @@ class Window(QtGui.QMainWindow):
                                            hex(self.pe.DOS_HEADER.dump_dict()['e_oeminfo']['FileOffset']),
                                            hex(self.pe.DOS_HEADER.dump_dict()['e_res2']['FileOffset']),
                                            hex(self.pe.DOS_HEADER.dump_dict()['e_lfanew']['FileOffset'])],
+
                                  'Description': ['Signature', 'Bytes on Last Page of File', 'Pages in File',
                                                  'Relocations', 'Size of Header in Paragraphs',
                                                  'Minimum Extra Paragraphs', 'Maximum Extra Paragraphs',
                                                  'Initial (relative) SS', 'Initial SP', 'Checksum', 'Initial IP',
                                                  'Initial (relative) CS', 'Offset to Relocation Table', 'Overlay Number'
-                                                 , 'Reserved', 'OEM Identifier', 'OEM Information', 'Reserved',
+                                                 'Reserved', 'OEM Identifier', 'OEM Information', 'Reserved',
                                                  'Offset to New EXE Header'],
+
                                  'Value': ['IMAGE_DOS_SIGNATURE MZ']}
 
         self.signature = {'Data': [hex(self.pe.NT_HEADERS.dump_dict()['Signature']['Value'])],
+
                           'pFile': [hex(self.pe.NT_HEADERS.dump_dict()['Signature']['FileOffset'])],
+
                           'Description': ['Signature'],
+
                           'Value': ['IMAGE_NT_SIGNATURE PE']}
 
         self.file_header = {'Data': [hex(self.pe.FILE_HEADER.dump_dict()['Machine']['Value']),
@@ -79,6 +86,7 @@ class Window(QtGui.QMainWindow):
                                      hex(self.pe.FILE_HEADER.dump_dict()['NumberOfSymbols']['Value']),
                                      hex(self.pe.FILE_HEADER.dump_dict()['SizeOfOptionalHeader']['Value']),
                                      hex(self.pe.FILE_HEADER.dump_dict()['Characteristics']['Value'])],
+
                             'pFile': [hex(self.pe.FILE_HEADER.dump_dict()['Machine']['FileOffset']),
                                       hex(self.pe.FILE_HEADER.dump_dict()['NumberOfSections']['FileOffset']),
                                       hex(self.pe.FILE_HEADER.dump_dict()['TimeDateStamp']['FileOffset']),
@@ -86,11 +94,89 @@ class Window(QtGui.QMainWindow):
                                       hex(self.pe.FILE_HEADER.dump_dict()['NumberOfSymbols']['FileOffset']),
                                       hex(self.pe.FILE_HEADER.dump_dict()['SizeOfOptionalHeader']['FileOffset']),
                                       hex(self.pe.FILE_HEADER.dump_dict()['Characteristics']['FileOffset'])],
+
                             'Description': ['Machine', 'Number of Sections', 'Time Date Stamp',
                                             'Pointer to Symbol Table', 'Number of Symbols', 'Size of Optional Header',
                                             'Characteristics'],
-                            'Value': ['IMAGE_FILE_MACHINE_I386', '',
+
+                            'Value': ['', '',
                                       self.pe.FILE_HEADER.dump_dict()['TimeDateStamp']['Value'].split('[')[1][:-1]]}
+
+        self.optional_header = {'Data': [hex(self.pe.OPTIONAL_HEADER.dump_dict()['Magic']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorLinkerVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorLinkerVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfCode']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfInitializedData']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfUninitializedData']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['AddressOfEntryPoint']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['BaseOfCode']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['BaseOfData']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['ImageBase']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SectionAlignment']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['FileAlignment']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorOperatingSystemVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorOperatingSystemVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorImageVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorImageVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorSubsystemVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorSubsystemVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['Reserved1']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfImage']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeaders']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['CheckSum']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['Subsystem']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['DllCharacteristics']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfStackReserve']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfStackCommit']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeapReserve']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeapCommit']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['LoaderFlags']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['NumberOfRvaAndSizes']['Value'])],
+
+                                'pFile': [hex(self.pe.OPTIONAL_HEADER.dump_dict()['Magic']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorLinkerVersion']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorLinkerVersion']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfCode']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfInitializedData']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfUninitializedData']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['AddressOfEntryPoint']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['BaseOfCode']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['BaseOfData']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['ImageBase']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SectionAlignment']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['FileAlignment']['Value']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorOperatingSystemVersion'][
+                                                  'FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorOperatingSystemVersion'][
+                                                  'FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorImageVersion']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorImageVersion']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorSubsystemVersion']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorSubsystemVersion']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['Reserved1']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfImage']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeaders']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['CheckSum']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['Subsystem']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['DllCharacteristics']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfStackReserve']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfStackCommit']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeapReserve']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeapCommit']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['LoaderFlags']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['NumberOfRvaAndSizes']['FileOffset'])],
+
+                                'Description': ['Magic', 'Major Linker Version', 'Minor Linker Version', 'Size of Code',
+                                                'Size of Initialized Data', 'Size of Uninitialized Data',
+                                                'Address of Entry Point', 'Base of Code', 'Base of Data', 'Image Base',
+                                                'Section Alignment', 'File Alignment', 'Major Operating System Version',
+                                                'Minor Operating System Version', 'Major Image Version',
+                                                'Minor Image Version', 'Major Subsystem Version',
+                                                'Minor Subsystem Version', 'Win32 Version Value', 'Size of Image',
+                                                'Size of Headers', 'Checksum', 'Subsystem', 'Dll Characteristics',
+                                                'Size of Stack Reserve', 'Size of Stack Commit', 'Size of Heap Reserve',
+                                                'Size of Heap Commit', 'Loader Flags', 'Number of Data Directories'],
+                                'Value': ['IMAGE_NT_OPTIONAL_HDR32_MAGIC']}
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
@@ -187,6 +273,7 @@ class Window(QtGui.QMainWindow):
         image_dos_header.clicked.connect(self.display_table_image_dos_header)
         signature.clicked.connect(self.display_table_signature)
         image_file_header.clicked.connect(self.display_table_file_header)
+        optional_header.clicked.connect(self.display_table_optional_header)
 
     def toolbar(self):
         """Display toolbar"""
@@ -223,13 +310,25 @@ class Window(QtGui.QMainWindow):
         table_file_header.show()
         self.table = table_file_header
 
+    def display_table_optional_header(self):
+        table_optional_header = TableView(self.optional_header, 30, 4)
+        table_optional_header.show()
+        self.table = table_optional_header
+
     def file_open(self):
         """Open Exe File"""
+        self.name = QtGui.QFileDialog.getOpenFileName(
+
+            self, 'Open File', '', 'All Files(*.exe*)')
+
+        self.pe = pefile.PE(self.name, fast_load=True)
         self.pe.full_load()
 
-    def read_program_value(self):
+    def read_program_value(self, path):
         """Read Binary File"""
-        return self.pe.header
+        with open(path, 'rb') as f:
+            contents = f.read()
+        return contents
 
     def read_optional_header(self, pe):
         """Read Optional Header"""

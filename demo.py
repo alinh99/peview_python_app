@@ -8,24 +8,20 @@ fd = open(exe_path, 'rb')
 pe_data = mmap.mmap(fd.fileno(), 0, access=mmap.ACCESS_READ)
 print(pe_data)
 
-# Parse the data contained in the buffer
-# pe = pefile.PE(data=pe_data)
-# lst_dos_header = []
-# for val_dos_header in pe.DOS_HEADER.dump():
-#     lst_dos_header.append(val_dos_header)
-# print(pe.dword_align(None, pe.OPTIONAL_HEADER))
-
 pe = pefile.PE(exe_path)
-# print "PE Signature: " + hex(pe.VS_FIXEDFILEINFO.Signature)
-print "Image Base: " + hex(pe.OPTIONAL_HEADER.ImageBase)
-print "Address of EntryPoint: " + hex(pe.OPTIONAL_HEADER.AddressOfEntryPoint)
-print "RVA Number and Size: " + hex(pe.OPTIONAL_HEADER.NumberOfRvaAndSizes)
-print "Number of Sections within PE: " + hex(pe.FILE_HEADER.NumberOfSections)
 
-print pe.FILE_HEADER
-print pe.FILE_HEADER.dump_dict()
-print hex(pe.FILE_HEADER.dump_dict()['Machine']['FileOffset'])
-print hex(pe.FILE_HEADER.dump_dict()['Machine']['Value'])
-print pe.FILE_HEADER.dump_dict()['TimeDateStamp']['Value'].split('[')[0][:-1]
-
-# print hex(pe.NT_HEADERS.dump_dict()['Signature']['Value'])
+print pe.OPTIONAL_HEADER
+print hex(pe.OPTIONAL_HEADER.dump_dict()['Magic']['FileOffset'])
+print hex(pe.OPTIONAL_HEADER.dump_dict()['Magic']['Value'])
+abcd = {'Description': ['Magic', 'Major Linker Version', 'Minor Linker Version', 'Size of Code',
+                        'Size of Initialized Data', 'Size of Uninitialized Data',
+                        'Address of Entry Point', 'Base of Code', 'Base of Data', 'Image Base',
+                        'Section Alignment', 'File Alignment', 'Major Operating System Version',
+                        'Minor Operating System Version',
+                        'Major Image Version', 'Minor Image Version', 'Major Subsystem Version',
+                        'Minor Subsystem Version', 'Win32 Version Value', 'Size of Image',
+                        'Size of Headers', 'Checksum', 'Subsystem', 'Dll Characteristics',
+                        'Size of Stack Reserve', 'Size of Stack Commit', 'Size of Heap Reserve',
+                        'Size of Heap Commit', 'Loader Flags', 'Number of Data Directories']}
+print len(abcd['Description'])
+print(pe.header)
