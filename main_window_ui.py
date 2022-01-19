@@ -3,8 +3,15 @@
 # (or w/ever other coding you use for unicode literals;-)
 import sys
 import pefile
-from PyQt4 import QtGui, QtCore, Qt
+from PyQt4 import QtGui
 from table import TableView
+
+
+
+def read_image_section_header_name(pe):
+    """Read Image Section Header"""
+    for section in pe.sections:
+        return section.name
 
 
 class Window(QtGui.QMainWindow):
@@ -18,7 +25,7 @@ class Window(QtGui.QMainWindow):
         self.textEdit = QtGui.QTextEdit()
         self.toolBar = self.addToolBar("Extraction")
         self.section = QtGui.QTextEdit()
-        self.section_header = QtGui.QTextEdit()
+
         self.program_value = {'Value': [str(self.read_program_value())]}
 
         self.image_dos_header = {'Data': [hex(self.pe.DOS_HEADER.dump_dict()['e_magic']['Value']),
@@ -66,7 +73,8 @@ class Window(QtGui.QMainWindow):
                                                  'Minimum Extra Paragraphs', 'Maximum Extra Paragraphs',
                                                  'Initial (relative) SS', 'Initial SP', 'Checksum', 'Initial IP',
                                                  'Initial (relative) CS', 'Offset to Relocation Table', 'Overlay Number'
-                                                 'Reserved', 'OEM Identifier', 'OEM Information', 'Reserved',
+                                                                                                        'Reserved',
+                                                 'OEM Identifier', 'OEM Information', 'Reserved',
                                                  'Offset to New EXE Header'],
 
                                  'Value': ['IMAGE_DOS_SIGNATURE MZ']}
@@ -114,8 +122,10 @@ class Window(QtGui.QMainWindow):
                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['ImageBase']['Value']),
                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SectionAlignment']['Value']),
                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['FileAlignment']['Value']),
-                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorOperatingSystemVersion']['Value']),
-                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorOperatingSystemVersion']['Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorOperatingSystemVersion'][
+                                                 'Value']),
+                                         hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorOperatingSystemVersion'][
+                                                 'Value']),
                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorImageVersion']['Value']),
                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorImageVersion']['Value']),
                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorSubsystemVersion']['Value']),
@@ -137,8 +147,10 @@ class Window(QtGui.QMainWindow):
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorLinkerVersion']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorLinkerVersion']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfCode']['FileOffset']),
-                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfInitializedData']['FileOffset']),
-                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfUninitializedData']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfInitializedData'][
+                                                  'FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfUninitializedData'][
+                                                  'FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['AddressOfEntryPoint']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['BaseOfCode']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['BaseOfData']['FileOffset']),
@@ -151,8 +163,10 @@ class Window(QtGui.QMainWindow):
                                                   'FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorImageVersion']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorImageVersion']['FileOffset']),
-                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorSubsystemVersion']['FileOffset']),
-                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorSubsystemVersion']['FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MajorSubsystemVersion'][
+                                                  'FileOffset']),
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['MinorSubsystemVersion'][
+                                                  'FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['Reserved1']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfImage']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeaders']['FileOffset']),
@@ -164,7 +178,8 @@ class Window(QtGui.QMainWindow):
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeapReserve']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['SizeOfHeapCommit']['FileOffset']),
                                           hex(self.pe.OPTIONAL_HEADER.dump_dict()['LoaderFlags']['FileOffset']),
-                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['NumberOfRvaAndSizes']['FileOffset'])],
+                                          hex(self.pe.OPTIONAL_HEADER.dump_dict()['NumberOfRvaAndSizes'][
+                                                  'FileOffset'])],
 
                                 'Description': ['Magic', 'Major Linker Version', 'Minor Linker Version', 'Size of Code',
                                                 'Size of Initialized Data', 'Size of Uninitialized Data',
@@ -177,6 +192,8 @@ class Window(QtGui.QMainWindow):
                                                 'Size of Stack Reserve', 'Size of Stack Commit', 'Size of Heap Reserve',
                                                 'Size of Heap Commit', 'Loader Flags', 'Number of Data Directories'],
                                 'Value': ['IMAGE_NT_OPTIONAL_HDR32_MAGIC']}
+
+        # self.section_header
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
@@ -222,16 +239,16 @@ class Window(QtGui.QMainWindow):
         program = QtGui.QPushButton("PROGRAM", self)
         program.setStyleSheet("font-size: 25px;")
 
-        image_dos_header = QtGui.QPushButton("IMAGE_DOS_HEADER", self)
+        image_dos_header = QtGui.QPushButton(self.pe.DOS_HEADER.name, self)
         image_dos_header.setStyleSheet("font-size: 25px;")
 
-        optional_header = QtGui.QPushButton("OPTIONAL_HEADER", self)
+        optional_header = QtGui.QPushButton(self.pe.OPTIONAL_HEADER.name, self)
         optional_header.setStyleSheet("font-size: 25px")
 
-        signature = QtGui.QPushButton("SIGNATURE", self)
+        signature = QtGui.QPushButton(self.pe.NT_HEADERS.dump_dict().keys()[1], self)
         signature.setStyleSheet("font-size: 25px")
 
-        image_file_header = QtGui.QPushButton("IMAGE_FILE_HEADER", self)
+        image_file_header = QtGui.QPushButton(self.pe.FILE_HEADER.name, self)
         image_file_header.setStyleSheet("font-size: 25px")
 
         image_section_header = QtGui.QPushButton("IMAGE_SECTION_HEADER", self)
@@ -337,29 +354,6 @@ class Window(QtGui.QMainWindow):
 
     def read_ms_dos_stub_program(self, pe):
         pass
-
-    def read_image_nt_header(self, pe):
-        pass
-
-    def read_signature(self, pe):
-        """Read NT_HEADERS Signature"""
-        for field in pe.NT_HEADERS.dump():
-            self.setCentralWidget(self.signature)
-            self.signature.append(field)
-
-    def read_image_file_header(self, pe):
-        """Read NT_HEADERS FILE_HEADER"""
-        self.file_header.setReadOnly(True)
-        for field in pe.FILE_HEADER.dump():
-            self.setCentralWidget(self.file_header)
-            self.file_header.append(field)
-
-    def read_image_section_header(self, pe):
-        """Read Image Section Header"""
-        self.section_header.setReadOnly(True)
-        self.setCentralWidget(self.section_header)
-        self.section_header.setPlainText(
-            ' '.join(map(str, pe.sections)))
 
     def read_sections(self, pe):
         """Read Section Header"""
