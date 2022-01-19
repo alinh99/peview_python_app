@@ -21,9 +21,17 @@ pe = pefile.PE(exe_path)
 #         print("Error")
 
 # for section in pe.sections:
-#     print section.dump_dict().keys()
-
+#     print section.Name
+# a = [section.Name for section in len(pe.sections)]
+# print pe.sections[].dump_dict()
+# print len(pe.sections.dump_dict()['Name'])
+# print str(a[0])
+# print str(a[1])
+# print str(a[2])
 # print pe.sections[0].dump_dict().keys()
-
+lst = []
 for section in pe.sections:
-    print hex(section.dump_dict()['']['FileOffset'])
+    lst.append(section.Name)
+# print len(lst)
+for i in lst:
+    print i

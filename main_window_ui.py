@@ -7,7 +7,6 @@ from PyQt4 import QtGui
 from table import TableView
 
 
-
 def read_image_section_header_name(pe):
     """Read Image Section Header"""
     for section in pe.sections:
@@ -20,7 +19,6 @@ class Window(QtGui.QMainWindow):
         self.name = QtGui.QFileDialog.getOpenFileName(
 
             self, 'Open File', '', 'All Files(*.exe*)')
-
         self.pe = pefile.PE(self.name, fast_load=True)
         self.textEdit = QtGui.QTextEdit()
         self.toolBar = self.addToolBar("Extraction")
@@ -251,9 +249,21 @@ class Window(QtGui.QMainWindow):
         image_file_header = QtGui.QPushButton(self.pe.FILE_HEADER.name, self)
         image_file_header.setStyleSheet("font-size: 25px")
 
-        image_section_header = QtGui.QPushButton("IMAGE_SECTION_HEADER", self)
-        image_section_header.setStyleSheet("font-size: 25px")
+        lst_image_section = []
+        for section in self.pe.sections:
+            lst_image_section.append(section.Name)
 
+        image_section_header = QtGui.QPushButton("IMAGE SECTION HEADER", self)
+        image_section_header.setStyleSheet("font-size: 25px")
+        image_section_header.resize(350, 30)
+        image_section_header.move(782, 400)
+        menu_image_section_header = QtGui.QMenu()
+
+        for i in lst_image_section:
+            menu_image_section_header.addAction(i)
+
+        image_section_header.setMenu(menu_image_section_header)
+        image_section_header.show()
         section = QtGui.QPushButton("SECTION", self)
         section.setStyleSheet("font-size: 25px")
 
@@ -276,10 +286,6 @@ class Window(QtGui.QMainWindow):
         image_file_header.resize(350, 30)
         image_file_header.move(782, 350)
         image_file_header.show()
-
-        image_section_header.resize(350, 30)
-        image_section_header.move(782, 400)
-        image_section_header.show()
 
         section.resize(350, 30)
         section.move(782, 450)
