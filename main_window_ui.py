@@ -5,6 +5,7 @@ import sys
 import pefile
 from PyQt4 import QtGui
 from table import TableView
+import functools
 
 
 def read_image_section_header_name(pe):
@@ -298,7 +299,7 @@ class Window(QtGui.QMainWindow):
         lst_image_section = []
         for section in self.pe.sections:
             lst_image_section.append(section.Name)
-        print lst_image_section
+
         image_section_header = QtGui.QPushButton("IMAGE SECTION HEADER", self)
         image_section_header.setStyleSheet("font-size: 25px")
         image_section_header.resize(350, 30)
@@ -308,8 +309,10 @@ class Window(QtGui.QMainWindow):
 
         for index, i in enumerate(lst_image_section):
             item_image_section = menu_image_section_header.addAction("IMAGE SECTION HEADER " + i)
-            item_image_section.triggered.connect(lambda: self.image_section_file_offset("Name", index))
-            print index
+            # item_image_section.triggered.connect(self.display_table_image_section_header)
+            # lst_item.append(item_image_section)
+            item_image_section.triggered.connect(functools.partial(self.image_section, "Name", "FileOffset", index))
+
         image_section_header.setMenu(menu_image_section_header)
         image_section_header.show()
         section = QtGui.QPushButton("SECTION", self)
@@ -345,7 +348,6 @@ class Window(QtGui.QMainWindow):
         signature.clicked.connect(self.display_table_signature)
         image_file_header.clicked.connect(self.display_table_file_header)
         optional_header.clicked.connect(self.display_table_optional_header)
-        # image_section_header.clicked.connect(self.display_table_image_section_header)
 
     def toolbar(self):
         """Display toolbar"""
@@ -387,18 +389,16 @@ class Window(QtGui.QMainWindow):
         table_optional_header.show()
         self.table = table_optional_header
 
-    def image_section_file_offset(self, key, i):
+    def image_section(self, key1, key2, i):
         value_file_offset = []
         for section in self.pe.sections:
-            value_file_offset.append(section.dump_dict()[key]["FileOffset"])
-        print value_file_offset
-        print value_file_offset[i]
-            # print value_file_offset[i-1]
-        # print value_file_offset[i]
-        # return value_file_offset[i]
+            value_file_offset.append(section.dump_dict()[key1][key2])
+        print hex(value_file_offset[i])
+        return hex(value_file_offset[i])
 
     def display_table_image_section_header(self):
-        table_image_section_header = TableView(self.image_section_header, 30, 4)
+        # for i in range(3):
+        table_image_section_header = TableView(self.image_section_header, 10, 4)
         table_image_section_header.show()
         self.table = table_image_section_header
 
