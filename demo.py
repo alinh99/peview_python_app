@@ -29,9 +29,7 @@ pe = pefile.PE(exe_path)
 # print str(a[1])
 # print str(a[2])
 # print pe.sections[0].dump_dict().keys()
-lst = []
+
 for section in pe.sections:
-    lst.append(section.Name)
-# print len(lst)
-for i in lst:
-    print i
+    print (section.dump_dict())
+    # print section.dump_dict()

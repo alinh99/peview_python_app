@@ -190,7 +190,52 @@ class Window(QtGui.QMainWindow):
                                                 'Size of Stack Reserve', 'Size of Stack Commit', 'Size of Heap Reserve',
                                                 'Size of Heap Commit', 'Loader Flags', 'Number of Data Directories'],
                                 'Value': ['IMAGE_NT_OPTIONAL_HDR32_MAGIC']}
-
+        self.image_section_header = {'Data': ["",
+                                              [hex(section.dump_dict()["Misc"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["VirtualAddress"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["SizeOfRawData"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["PointerToRawData"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["PointerToRelocations"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["PointerToLinenumbers"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["NumberOfRelocations"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["NumberOfLinenumbers"]["Value"])
+                                               for section in self.pe.sections],
+                                              [hex(section.dump_dict()["Characteristics"]["Value"])
+                                               for section in self.pe.sections],
+                                              ],
+                                     'pFile': [[hex(section.dump_dict()["Name"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["Misc"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["VirtualAddress"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["SizeOfRawData"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["PointerToRawData"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["PointerToRelocations"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["PointerToLinenumbers"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["NumberOfRelocations"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["NumberOfLinenumbers"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               [hex(section.dump_dict()["Characteristics"]["FileOffset"])
+                                                for section in self.pe.sections],
+                                               ],
+                                     'Description': ['Name', 'Virtual Size', 'RVA', 'Size of Raw Data',
+                                                     'Pointer to Raw Data', 'Pointer to Relocations',
+                                                     'Pointer to Line Numbers', 'Number of Relocations',
+                                                     'Number of Line Numbers', 'Characteristics'],
+                                     'Value': [section.Name for section in self.pe.sections]}
         # self.section_header
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
@@ -228,8 +273,9 @@ class Window(QtGui.QMainWindow):
         fileMenu.addAction(exit_app)
 
         self.toolbar()
-        self.file_open()
+        # self.image_section_file_offset(key="Name", i)
         self.create_list_button()
+        # self.display_table_image_section_header()
 
     def create_list_button(self):
         # program_data = {'Value': str(lambda: self.read_program_value(self.name))}
@@ -252,16 +298,18 @@ class Window(QtGui.QMainWindow):
         lst_image_section = []
         for section in self.pe.sections:
             lst_image_section.append(section.Name)
-
+        print lst_image_section
         image_section_header = QtGui.QPushButton("IMAGE SECTION HEADER", self)
         image_section_header.setStyleSheet("font-size: 25px")
         image_section_header.resize(350, 30)
         image_section_header.move(782, 400)
+
         menu_image_section_header = QtGui.QMenu()
 
-        for i in lst_image_section:
-            menu_image_section_header.addAction(i)
-
+        for index, i in enumerate(lst_image_section):
+            item_image_section = menu_image_section_header.addAction("IMAGE SECTION HEADER " + i)
+            item_image_section.triggered.connect(lambda: self.image_section_file_offset("Name", index))
+            print index
         image_section_header.setMenu(menu_image_section_header)
         image_section_header.show()
         section = QtGui.QPushButton("SECTION", self)
@@ -297,6 +345,7 @@ class Window(QtGui.QMainWindow):
         signature.clicked.connect(self.display_table_signature)
         image_file_header.clicked.connect(self.display_table_file_header)
         optional_header.clicked.connect(self.display_table_optional_header)
+        # image_section_header.clicked.connect(self.display_table_image_section_header)
 
     def toolbar(self):
         """Display toolbar"""
@@ -337,6 +386,21 @@ class Window(QtGui.QMainWindow):
         table_optional_header = TableView(self.optional_header, 30, 4)
         table_optional_header.show()
         self.table = table_optional_header
+
+    def image_section_file_offset(self, key, i):
+        value_file_offset = []
+        for section in self.pe.sections:
+            value_file_offset.append(section.dump_dict()[key]["FileOffset"])
+        print value_file_offset
+        print value_file_offset[i]
+            # print value_file_offset[i-1]
+        # print value_file_offset[i]
+        # return value_file_offset[i]
+
+    def display_table_image_section_header(self):
+        table_image_section_header = TableView(self.image_section_header, 30, 4)
+        table_image_section_header.show()
+        self.table = table_image_section_header
 
     def file_open(self):
         """Open Exe File"""
