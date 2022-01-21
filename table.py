@@ -11,6 +11,7 @@ class TableView(QtGui.QTableWidget):
 
     def setData(self):
         horHeaders = []
+        # print self.data
         for n, key in enumerate(sorted(self.data.keys())):
             horHeaders.append(key)
             for m, item in enumerate(self.data[key]):

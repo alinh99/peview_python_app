@@ -30,6 +30,7 @@ pe = pefile.PE(exe_path)
 # print str(a[2])
 # print pe.sections[0].dump_dict().keys()
 
-for section in pe.sections:
-    print (section.dump_dict())
-    # print section.dump_dict()
+# for section in pe.sections:
+#     print hex(section.dump_dict()["Misc"]["Value"])
+#     # print section.dump_dict()
+print hex(pe.sections[0].dump_dict()["Misc"]["FileOffset"])
