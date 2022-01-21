@@ -202,53 +202,6 @@ class Window(QtGui.QMainWindow):
                                                 'Size of Heap Commit', 'Loader Flags', 'Number of Data Directories'],
                                 'Value': ['IMAGE_NT_OPTIONAL_HDR32_MAGIC']}
 
-        # self.image_section_header = {'Data': ["",
-        #                                       [hex(section.dump_dict()["Misc"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["VirtualAddress"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["SizeOfRawData"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["PointerToRawData"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["PointerToRelocations"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["PointerToLinenumbers"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["NumberOfRelocations"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["NumberOfLinenumbers"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       [hex(section.dump_dict()["Characteristics"]["Value"])
-        #                                        for section in self.pe.sections],
-        #                                       ],
-        #                              'pFile': [[hex(section.dump_dict()["Name"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["Misc"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["VirtualAddress"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["SizeOfRawData"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["PointerToRawData"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["PointerToRelocations"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["PointerToLinenumbers"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["NumberOfRelocations"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["NumberOfLinenumbers"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        [hex(section.dump_dict()["Characteristics"]["FileOffset"])
-        #                                         for section in self.pe.sections],
-        #                                        ],
-        #                              'Description': ['Name', 'Virtual Size', 'RVA', 'Size of Raw Data',
-        #                                              'Pointer to Raw Data', 'Pointer to Relocations',
-        #                                              'Pointer to Line Numbers', 'Number of Relocations',
-        #                                              'Number of Line Numbers', 'Characteristics'],
-        #                              'Value': [section.Name for section in self.pe.sections]}
-
         # set size of main window
         self.setGeometry(25, 25, 4000, 4000)
 
