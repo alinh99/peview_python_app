@@ -29,9 +29,9 @@ class Window(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.section = QtGui.QTextEdit()
 
-        self.program_value = {'Value': [str(self.read_program_value())]}
+        self.program_value = {"Data": [], "pFile": [], "Description": [], 'Value': [str(self.read_program_value())]}
 
-        self.ms_dos_stub = {'Value': [str(self.read_ms_dos_stub())]}
+        self.ms_dos_stub = {"Data": [], "pFile": [], "Description": [], 'Value': [str(self.read_ms_dos_stub())]}
 
         self.image_dos_header = {'Data': [hex(self.pe.DOS_HEADER.dump_dict()['e_magic']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_cblp']['Value']),
@@ -292,11 +292,11 @@ class Window(QtGui.QMainWindow):
         program.show()
 
         image_dos_header.resize(350, 30)
-        image_dos_header.move(782, 200)
+        image_dos_header.move(782, 250)
         image_dos_header.show()
 
         ms_dos_stub.resize(350, 30)
-        ms_dos_stub.move(782, 250)
+        ms_dos_stub.move(782, 200)
         ms_dos_stub.show()
 
         optional_header.resize(350, 30)
@@ -334,7 +334,7 @@ class Window(QtGui.QMainWindow):
 
     def display_table_program(self):
         """Display table program"""
-        table_program = TableView(self.program_value, 3, 1)
+        table_program = TableView(self.program_value, 31, 4)
         # table.setWindowFlags(table.windowFlags() | Qt.Window)
         table_program.show()
         self.table = table_program
@@ -342,25 +342,25 @@ class Window(QtGui.QMainWindow):
 
     def display_table_image_dos_header(self):
         """Display table image dos header"""
-        table_image_dos_header = TableView(self.image_dos_header, 19, 4)
+        table_image_dos_header = TableView(self.image_dos_header, 31, 4)
         table_image_dos_header.show()
         self.table = table_image_dos_header
 
     def display_table_signature(self):
         """Display table signature"""
-        table_signature = TableView(self.signature, 1, 4)
+        table_signature = TableView(self.signature, 31, 4)
         table_signature.show()
         self.table = table_signature
 
     def display_table_file_header(self):
         """Display table file header"""
-        table_file_header = TableView(self.file_header, 7, 4)
+        table_file_header = TableView(self.file_header, 31, 4)
         table_file_header.show()
         self.table = table_file_header
 
     def display_table_optional_header(self):
         """Display table optional header"""
-        table_optional_header = TableView(self.optional_header, 30, 4)
+        table_optional_header = TableView(self.optional_header, 31, 4)
         table_optional_header.show()
         self.table = table_optional_header
 
@@ -398,12 +398,12 @@ class Window(QtGui.QMainWindow):
                                 'Number of Line Numbers', 'Characteristics']
                 }
         # return value_file_offset[i]
-        table_image_section_header = TableView(data, 11, 4)
+        table_image_section_header = TableView(data, 31, 4)
         table_image_section_header.show()
         self.table = table_image_section_header
 
     def display_table_ms_dos_stub(self):
-        table_ms_dos_stub = TableView(self.ms_dos_stub, 1, 1)
+        table_ms_dos_stub = TableView(self.ms_dos_stub, 31, 4)
         table_ms_dos_stub.show()
         self.table = table_ms_dos_stub
 

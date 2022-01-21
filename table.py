@@ -1,4 +1,4 @@
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
 
 
 class TableView(QtGui.QTableWidget):
@@ -8,9 +8,15 @@ class TableView(QtGui.QTableWidget):
         self.setData()
         header = self.horizontalHeader()
         header.setStretchLastSection(True)
+        header.setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        header.setResizeMode(0, QtGui.QHeaderView.Stretch)
+        header.setResizeMode(1, QtGui.QHeaderView.Stretch)
+        header.setResizeMode(2, QtGui.QHeaderView.Stretch)
+        header.setResizeMode(3, QtGui.QHeaderView.Stretch)
+        self.maximumHeight()
+        self.maximumWidth()
         self.showMaximized()
-        self.resizeColumnsToContents()
-        self.resizeRowsToContents()
+
 
     def setData(self):
         horHeaders = []
@@ -21,3 +27,4 @@ class TableView(QtGui.QTableWidget):
                 newitem = QtGui.QTableWidgetItem(item)
                 self.setItem(m, n, newitem)
         self.setHorizontalHeaderLabels(horHeaders)
+
