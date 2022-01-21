@@ -384,7 +384,7 @@ class Window(QtGui.QMainWindow):
                          hex(self.pe.sections[i].dump_dict()["NumberOfLinenumbers"]["FileOffset"]),
                          hex(self.pe.sections[i].dump_dict()["Characteristics"]["FileOffset"])],
 
-                "Value": [self.pe.sections[i].dump_dict()["Name"]["Value"]],
+                "Value": [self.pe.sections[i].dump_dict()["Name"]["Value"].split('\\x00')[0]],
 
                 "Description": ['Name', "", 'Virtual Size', 'RVA', 'Size of Raw Data',
                                 'Pointer to Raw Data', 'Pointer to Relocations',
