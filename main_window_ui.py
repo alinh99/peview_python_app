@@ -22,7 +22,7 @@ class Window(QtGui.QMainWindow):
         self.name = QtGui.QFileDialog.getOpenFileName(
 
             self, 'Open File', '', 'All Files(*.exe*)')
-        # self.index = 0
+
         self.pe = pefile.PE(self.name, fast_load=True)
         self.image_section_header = {"Data": [],
                                      "pFile": [],
@@ -245,8 +245,6 @@ class Window(QtGui.QMainWindow):
         # self.display_table_image_section_header()
 
     def create_list_button(self):
-        # program_data = {'Value': str(lambda: self.read_program_value(self.name))}
-        # print (program_data)
         program = QtGui.QPushButton("PROGRAM", self)
         program.setStyleSheet("font-size: 25px;")
 
