@@ -8,12 +8,6 @@ from table import TableView
 import functools
 
 
-def read_image_section_header_name(pe):
-    """Read Image Section Header"""
-    for section in pe.sections:
-        return section.name
-
-
 class Window(QtGui.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
