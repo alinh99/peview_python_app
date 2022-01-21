@@ -353,6 +353,7 @@ class Window(QtGui.QMainWindow):
 
     def dispaly_image_section_table(self, i):
         data = {"Data": ["",
+                         "",
                          hex(self.pe.sections[i].dump_dict()["Misc"]["Value"]),
                          hex(self.pe.sections[i].dump_dict()["VirtualAddress"]["Value"]),
                          hex(self.pe.sections[i].dump_dict()["SizeOfRawData"]["Value"]),
@@ -364,6 +365,7 @@ class Window(QtGui.QMainWindow):
                          hex(self.pe.sections[i].dump_dict()["Characteristics"]["Value"])],
 
                 "pFile": [hex(self.pe.sections[i].dump_dict()["Name"]["FileOffset"]),
+                          "",
                          hex(self.pe.sections[i].dump_dict()["Misc"]["FileOffset"]),
                          hex(self.pe.sections[i].dump_dict()["VirtualAddress"]["FileOffset"]),
                          hex(self.pe.sections[i].dump_dict()["SizeOfRawData"]["FileOffset"]),
@@ -375,13 +377,14 @@ class Window(QtGui.QMainWindow):
                          hex(self.pe.sections[i].dump_dict()["Characteristics"]["FileOffset"])],
 
                 "Value": [self.pe.sections[i].dump_dict()["Name"]["Value"]],
-                "Description": ['Name', 'Virtual Size', 'RVA', 'Size of Raw Data',
+
+                "Description": ['Name', "", 'Virtual Size', 'RVA', 'Size of Raw Data',
                                 'Pointer to Raw Data', 'Pointer to Relocations',
                                 'Pointer to Line Numbers', 'Number of Relocations',
                                 'Number of Line Numbers', 'Characteristics']
                 }
         # return value_file_offset[i]
-        table_image_section_header = TableView(data, 10, 4)
+        table_image_section_header = TableView(data, 11, 4)
         table_image_section_header.show()
         self.table = table_image_section_header
 
