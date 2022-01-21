@@ -112,7 +112,7 @@ class Window(QtGui.QMainWindow):
                                             'Pointer to Symbol Table', 'Number of Symbols', 'Size of Optional Header',
                                             'Characteristics'],
 
-                            'Value': ['', '',
+                            'Value': [str(self.get_machine_value()), '',
                                       self.pe.FILE_HEADER.dump_dict()['TimeDateStamp']['Value'].split('[')[1][:-1]]}
 
         self.optional_header = {'Data': [hex(self.pe.OPTIONAL_HEADER.dump_dict()['Magic']['Value']),
@@ -426,6 +426,14 @@ class Window(QtGui.QMainWindow):
             return "This program must be run under win 32"
         else:
             return "This program must be run under win 64"
+
+    def get_machine_value(self):
+        if hex(self.pe.FILE_HEADER.Machine) == '0x14c':
+            return "IMAGE_FILE_MACHINE_I386"
+        elif hex(self.pe.FILE_HEADER.Machine) == '0x200':
+            return "IMAGE_FILE_MACHINE_IA64"
+        else:
+            return "IMAGE_FILE_MACHINE_AMD64"
 
     def close_application(self):
         """Close Application"""
