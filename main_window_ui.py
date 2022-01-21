@@ -277,8 +277,18 @@ class Window(QtGui.QMainWindow):
 
         image_section_header.setMenu(menu_image_section_header)
         image_section_header.show()
+
         section = QtGui.QPushButton("SECTION", self)
+        section.resize(350, 30)
+        section.move(782, 450)
         section.setStyleSheet("font-size: 25px")
+
+        menu_section = QtGui.QMenu()
+        for i in self.lst_image_section:
+            menu_section.addAction("SECTION" + i)
+
+        section.setMenu(menu_section)
+        section.show()
 
         program.resize(350, 30)
         program.move(782, 150)
@@ -300,9 +310,7 @@ class Window(QtGui.QMainWindow):
         image_file_header.move(782, 350)
         image_file_header.show()
 
-        section.resize(350, 30)
-        section.move(782, 450)
-        section.show()
+
 
         # handle button
         program.clicked.connect(self.display_table_program)
