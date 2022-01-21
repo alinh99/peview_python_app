@@ -37,6 +37,8 @@ class Window(QtGui.QMainWindow):
 
         self.program_value = {'Value': [str(self.read_program_value())]}
 
+        self.ms_dos_stub = {'Value': [str(self.read_ms_dos_stub())]}
+
         self.image_dos_header = {'Data': [hex(self.pe.DOS_HEADER.dump_dict()['e_magic']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_cblp']['Value']),
                                           hex(self.pe.DOS_HEADER.dump_dict()['e_cp']['Value']),
@@ -251,6 +253,9 @@ class Window(QtGui.QMainWindow):
         image_dos_header = QtGui.QPushButton(self.pe.DOS_HEADER.name, self)
         image_dos_header.setStyleSheet("font-size: 25px;")
 
+        ms_dos_stub = QtGui.QPushButton("MS_DOS Stub Program", self)
+        ms_dos_stub.setStyleSheet("font-size: 25px;")
+
         optional_header = QtGui.QPushButton(self.pe.OPTIONAL_HEADER.name, self)
         optional_header.setStyleSheet("font-size: 25px")
 
@@ -266,7 +271,7 @@ class Window(QtGui.QMainWindow):
         image_section_header = QtGui.QPushButton("IMAGE SECTION HEADER", self)
         image_section_header.setStyleSheet("font-size: 25px")
         image_section_header.resize(350, 30)
-        image_section_header.move(782, 400)
+        image_section_header.move(782, 450)
 
         menu_image_section_header = QtGui.QMenu()
 
@@ -280,7 +285,7 @@ class Window(QtGui.QMainWindow):
 
         section = QtGui.QPushButton("SECTION", self)
         section.resize(350, 30)
-        section.move(782, 450)
+        section.move(782, 500)
         section.setStyleSheet("font-size: 25px")
 
         menu_section = QtGui.QMenu()
@@ -298,22 +303,25 @@ class Window(QtGui.QMainWindow):
         image_dos_header.move(782, 200)
         image_dos_header.show()
 
+        ms_dos_stub.resize(350, 30)
+        ms_dos_stub.move(782, 250)
+        ms_dos_stub.show()
+
         optional_header.resize(350, 30)
-        optional_header.move(782, 250)
+        optional_header.move(782, 300)
         optional_header.show()
 
         signature.resize(350, 30)
-        signature.move(782, 300)
+        signature.move(782, 350)
         signature.show()
 
         image_file_header.resize(350, 30)
-        image_file_header.move(782, 350)
+        image_file_header.move(782, 400)
         image_file_header.show()
-
-
 
         # handle button
         program.clicked.connect(self.display_table_program)
+        ms_dos_stub.clicked.connect(self.display_table_ms_dos_stub)
         image_dos_header.clicked.connect(self.display_table_image_dos_header)
         signature.clicked.connect(self.display_table_signature)
         image_file_header.clicked.connect(self.display_table_file_header)
@@ -333,6 +341,7 @@ class Window(QtGui.QMainWindow):
         self.show()
 
     def display_table_program(self):
+        """Display table program"""
         table_program = TableView(self.program_value, 3, 1)
         # table.setWindowFlags(table.windowFlags() | Qt.Window)
         table_program.show()
@@ -340,26 +349,31 @@ class Window(QtGui.QMainWindow):
         # self.read_program_value(self.name)
 
     def display_table_image_dos_header(self):
+        """Display table image dos header"""
         table_image_dos_header = TableView(self.image_dos_header, 19, 4)
         table_image_dos_header.show()
         self.table = table_image_dos_header
 
     def display_table_signature(self):
+        """Display table signature"""
         table_signature = TableView(self.signature, 1, 4)
         table_signature.show()
         self.table = table_signature
 
     def display_table_file_header(self):
+        """Display table file header"""
         table_file_header = TableView(self.file_header, 7, 4)
         table_file_header.show()
         self.table = table_file_header
 
     def display_table_optional_header(self):
+        """Display table optional header"""
         table_optional_header = TableView(self.optional_header, 30, 4)
         table_optional_header.show()
         self.table = table_optional_header
 
     def dispaly_image_section_table(self, i):
+        """Display table image section header"""
         data = {"Data": ["",
                          "",
                          hex(self.pe.sections[i].dump_dict()["Misc"]["Value"]),
@@ -374,15 +388,15 @@ class Window(QtGui.QMainWindow):
 
                 "pFile": [hex(self.pe.sections[i].dump_dict()["Name"]["FileOffset"]),
                           "",
-                         hex(self.pe.sections[i].dump_dict()["Misc"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["VirtualAddress"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["SizeOfRawData"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["PointerToRawData"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["PointerToRelocations"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["PointerToLinenumbers"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["NumberOfRelocations"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["NumberOfLinenumbers"]["FileOffset"]),
-                         hex(self.pe.sections[i].dump_dict()["Characteristics"]["FileOffset"])],
+                          hex(self.pe.sections[i].dump_dict()["Misc"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["VirtualAddress"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["SizeOfRawData"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["PointerToRawData"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["PointerToRelocations"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["PointerToLinenumbers"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["NumberOfRelocations"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["NumberOfLinenumbers"]["FileOffset"]),
+                          hex(self.pe.sections[i].dump_dict()["Characteristics"]["FileOffset"])],
 
                 "Value": [self.pe.sections[i].dump_dict()["Name"]["Value"].split('\\x00')[0]],
 
@@ -396,11 +410,10 @@ class Window(QtGui.QMainWindow):
         table_image_section_header.show()
         self.table = table_image_section_header
 
-    def display_table_image_section_header(self):
-        # for i in range(3):
-        table_image_section_header = TableView(self.image_section_header, 10, 4)
-        table_image_section_header.show()
-        self.table = table_image_section_header
+    def display_table_ms_dos_stub(self):
+        table_ms_dos_stub = TableView(self.ms_dos_stub, 1, 1)
+        table_ms_dos_stub.show()
+        self.table = table_ms_dos_stub
 
     def file_open(self):
         """Open Exe File"""
@@ -414,6 +427,13 @@ class Window(QtGui.QMainWindow):
     def read_program_value(self):
         """Read Binary File"""
         return self.pe.header
+
+    def read_ms_dos_stub(self):
+        """Read ms_dos_stub of exe file"""
+        if hex(self.pe.FILE_HEADER.Machine) == '0x14c':
+            return "This program must be run under win 32"
+        else:
+            return "This program must be run under win 64"
 
     def close_application(self):
         """Close Application"""

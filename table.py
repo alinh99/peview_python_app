@@ -6,13 +6,20 @@ class TableView(QtGui.QTableWidget):
         QtGui.QTableWidget.__init__(self, *args)
         self.data = data
         self.setData()
-        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.verticalHeader().sectionResized.connect(self.fitToTable)
-        self.horizontalHeader().sectionResized.connect(self.fitToTable)
+        # self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        # self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        # self.verticalHeader().sectionResized.connect(self.fitToTable)
+        # self.horizontalHeader().sectionResized.connect(self.fitToTable)
+        # self.setHorizontalHeaderLabels(["pFile", "Value", "Description", "Value"])
+        # self.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
+        # self.setSectionResizeMode(QtGui.QHeaderView.Stretch)
+        # self.setResizeMode(QtGui.QHeaderView.Stretch)
+        header = self.horizontalHeader()
+        header.setStretchLastSection(True)
+        self.showMaximized()
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
-        self.fitToTable()
+        # self.fitToTable()
 
     def setData(self):
         horHeaders = []
@@ -24,14 +31,14 @@ class TableView(QtGui.QTableWidget):
                 self.setItem(m, n, newitem)
         self.setHorizontalHeaderLabels(horHeaders)
 
-    @QtCore.pyqtSlot()
-    def fitToTable(self):
-        x = self.verticalHeader().size().width()
-        for i in range(self.columnCount()):
-            x += self.columnWidth(i)
-
-        y = self.horizontalHeader().size().height()
-        for i in range(self.rowCount()):
-            y += self.rowHeight(i)
-
-        self.setFixedSize(x, y)
+    # @QtCore.pyqtSlot()
+    # def fitToTable(self):
+    #     x = self.verticalHeader().size().width()
+    #     for i in range(self.columnCount()):
+    #         x += self.columnWidth(i)
+    #
+    #     y = self.horizontalHeader().size().height()
+    #     for i in range(self.rowCount()):
+    #         y += self.rowHeight(i)
+    #
+    #     self.setFixedSize(x, y)
