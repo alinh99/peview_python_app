@@ -304,3 +304,5 @@ On Unix-like systems, you’ll probably be able to run your scripts by double-cl
 
 Because the execution of scripts through double-click has several limitations and depends on many factors (such as the operating system, the file manager, execution permissions, file associations), it is recommended that you see it as a viable option for scripts already debugged and ready to go into production.
 
+# STEP 1: Double click on the directory(peview_python_app/dist)
+# STEP 2: Double click on peview_gui.exe
